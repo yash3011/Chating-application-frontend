@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+<title>Create Chat</title>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Create Private Chat</h2>
+
+<button onclick="createRoom()">Generate Code</button>
+<a href="/login.html" target="_blank"><button>Join chat</button></a>
+
+<h3 id="code"></h3>
+
+</div>
+
+<script>
+
+async function createRoom(){
+
+let res = await fetch("/create-room",{method:"POST"});
+let data = await res.json();
+document.getElementById("code").innerText =
+"Share this code: " + data.roomCode;
+
+}
+
+function goToLogin(){
+    window.location="login.html";
+}
+
+</script>
+
+</body>
+</html>

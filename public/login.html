@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Join Chat</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Join Private Chat</h2>
+
+<input id="code" placeholder="Enter room code">
+
+<button onclick="join()">Join Chat</button>
+
+</div>
+
+<script>
+
+async function join(){
+
+let code = document.getElementById("code").value;
+
+let res = await fetch("/join-room",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({roomCode:code})
+});
+
+if(res.ok){
+
+localStorage.setItem("room",code);
+
+window.location="chat.html";
+
+}else{
+
+alert("Room full or invalid");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
