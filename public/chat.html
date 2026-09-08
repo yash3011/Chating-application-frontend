@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>Chat</title>
+<title>Between Us | Private chat</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,14 +11,16 @@
 <div class="chat-container">
 
 <div class="chat-header">
-Private Chat
+<div>Between Us<small id="room-label">Your private room</small></div>
+<span id="connection-dot" class="connection-dot" aria-label="Connecting"></span>
 </div>
 
+<div id="chat-error" class="chat-error" role="alert" hidden></div>
 <div id="chat"></div>
 
 <div class="chat-input">
-<input id="msg" placeholder="Type message...">
-<button onclick="send()">Send</button>
+<input id="msg" maxlength="1000" placeholder="Write something just for you two..." autocomplete="off">
+<button id="send-button" onclick="send()">Send</button>
 </div>
 
 </div>

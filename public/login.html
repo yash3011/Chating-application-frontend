@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Join Chat</title>
+<title>Between Us | Join a room</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -9,11 +9,14 @@
 
 <div class="container">
 
+<div class="eyebrow">Between Us</div>
 <h2>Join Private Chat</h2>
+<p class="subtitle">A quiet room for the conversations that belong to just you two.</p>
 
-<input id="code" placeholder="Enter room code">
+<input id="code" placeholder="Enter your room code" maxlength="6" autocomplete="off">
 
-<button onclick="join()">Join Chat</button>
+<button id="join-button" onclick="join()">Enter room</button>
+<p id="status" class="status" role="alert"></p>
 
 </div>
 
@@ -21,13 +24,27 @@
 
 async function join(){
 
-let code = document.getElementById("code").value;
+let code = document.getElementById("code").value.trim().toUpperCase();
+let status = document.getElementById("status");
+let button = document.getElementById("join-button");
 
+if(!code){
+	status.textContent = "Enter the code your partner shared with you.";
+	status.className = "status error";
+	return;
+}
+
+button.disabled = true;
+status.textContent = "Checking your private room...";
+status.className = "status";
+
+try{
 let res = await fetch("/join-room",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({roomCode:code})
 });
+let data = await res.json();
 
 if(res.ok){
 
@@ -36,9 +53,14 @@ localStorage.setItem("room",code);
 window.location="chat.html";
 
 }else{
-
-alert("Room full or invalid");
-
+	status.textContent = data.msg || "That room is not available.";
+	status.className = "status error";
+}
+}catch(error){
+	status.textContent = "We could not reach the chat server. Try again in a moment.";
+	status.className = "status error";
+}finally{
+	button.disabled = false;
 }
 
 }

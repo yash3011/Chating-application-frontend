@@ -2,30 +2,47 @@
 <html>
 <head>
     <link rel="stylesheet" href="style.css">
-<title>Create Chat</title>
+<title>Between Us | Create a room</title>
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>Create Private Chat</h2>
+<div class="eyebrow">Between Us</div>
+<h2>Make a private room</h2>
+<p class="subtitle">Start a small, private space for the two of you.</p>
 
-<button onclick="createRoom()">Generate Code</button>
-<a href="/login.html" target="_blank"><button>Join chat</button></a>
+<button id="create-button" onclick="createRoom()">Create room</button>
+<a href="/login.html"><button type="button">Join with a code</button></a>
 
 <h3 id="code"></h3>
+<p id="status" class="status" role="alert"></p>
 
 </div>
 
 <script>
 
 async function createRoom(){
+let status = document.getElementById("status");
+let button = document.getElementById("create-button");
+button.disabled = true;
+status.textContent = "Preparing your private room...";
+status.className = "status";
 
-let res = await fetch("/create-room",{method:"POST"});
-let data = await res.json();
-document.getElementById("code").innerText =
-"Share this code: " + data.roomCode;
+try{
+    let res = await fetch("/create-room",{method:"POST"});
+    let data = await res.json();
+    if(!res.ok) throw new Error(data.msg || "Room creation failed");
+    document.getElementById("code").innerText = "Share this code: " + data.roomCode;
+    status.textContent = "Your room is ready.";
+    status.className = "status success";
+}catch(error){
+    status.textContent = error.message || "We could not create a room. Try again.";
+    status.className = "status error";
+}finally{
+    button.disabled = false;
+}
 
 }
 
