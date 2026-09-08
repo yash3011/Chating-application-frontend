@@ -20,6 +20,7 @@
 
 </div>
 
+<script src="api-config.js"></script>
 <script>
 
 async function join(){
@@ -39,12 +40,12 @@ status.textContent = "Checking your private room...";
 status.className = "status";
 
 try{
-let res = await fetch("/join-room",{
+let res = await fetch(`${BACKEND_URL}/join-room`,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({roomCode:code})
 });
-let data = await res.json();
+let data = await readResponse(res);
 
 if(res.ok){
 

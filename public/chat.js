@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io(BACKEND_URL);
 
 let room = localStorage.getItem("room");
 const chat = document.getElementById("chat");

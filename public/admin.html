@@ -21,6 +21,7 @@
 
 </div>
 
+<script src="api-config.js"></script>
 <script>
 
 async function createRoom(){
@@ -31,8 +32,8 @@ status.textContent = "Preparing your private room...";
 status.className = "status";
 
 try{
-    let res = await fetch("/create-room",{method:"POST"});
-    let data = await res.json();
+    let res = await fetch(`${BACKEND_URL}/create-room`,{method:"POST"});
+    let data = await readResponse(res);
     if(!res.ok) throw new Error(data.msg || "Room creation failed");
     document.getElementById("code").innerText = "Share this code: " + data.roomCode;
     status.textContent = "Your room is ready.";
